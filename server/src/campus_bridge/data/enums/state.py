@@ -1,0 +1,73 @@
+from enum import Enum
+
+from sqlalchemy import Enum as SQLEnum
+
+from campus_bridge.constants.state_constants import (
+    ANDHRA_PRADESH,
+    ARUNACHAL_PRADESH,
+    ASSAM,
+    BIHAR,
+    CHHATTISGARH,
+    GOA,
+    GUJARAT,
+    HARYANA,
+    HIMACHAL_PRADESH,
+    JHARKHAND,
+    KARNATAKA,
+    KERALA,
+    MADHYA_PRADESH,
+    MAHARASHTRA,
+    MANIPUR,
+    MEGHALAYA,
+    MIZORAM,
+    NAGALAND,
+    ODISHA,
+    PUNJAB,
+    RAJASTHAN,
+    SIKKIM,
+    TAMIL_NADU,
+    TELANGANA,
+    TRIPURA,
+    UTTAR_PRADESH,
+    UTTARAKHAND,
+    WEST_BENGAL,
+)
+
+from campus_bridge.utils.db_object import get_database_native_name
+
+
+class StateEnum(str, Enum):
+    ANDHRA_PRADESH = ANDHRA_PRADESH
+    ARUNACHAL_PRADESH = ARUNACHAL_PRADESH
+    ASSAM = ASSAM
+    BIHAR = BIHAR
+    CHHATTISGARH = CHHATTISGARH
+    GOA = GOA
+    GUJARAT = GUJARAT
+    HARYANA = HARYANA
+    HIMACHAL_PRADESH = HIMACHAL_PRADESH
+    JHARKHAND = JHARKHAND
+    KARNATAKA = KARNATAKA
+    KERALA = KERALA
+    MADHYA_PRADESH = MADHYA_PRADESH
+    MAHARASHTRA = MAHARASHTRA
+    MANIPUR = MANIPUR
+    MEGHALAYA = MEGHALAYA
+    MIZORAM = MIZORAM
+    NAGALAND = NAGALAND
+    ODISHA = ODISHA
+    PUNJAB = PUNJAB
+    RAJASTHAN = RAJASTHAN
+    SIKKIM = SIKKIM
+    TAMIL_NADU = TAMIL_NADU
+    TELANGANA = TELANGANA
+    TRIPURA = TRIPURA
+    UTTAR_PRADESH = UTTAR_PRADESH
+    UTTARAKHAND = UTTARAKHAND
+    WEST_BENGAL = WEST_BENGAL
+
+
+state_enum = SQLEnum(
+    StateEnum, 
+    name=get_database_native_name("State", "enum")
+)

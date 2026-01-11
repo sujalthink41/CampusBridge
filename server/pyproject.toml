@@ -11,6 +11,7 @@ dependencies = [
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
     "fastapi-injectable>=0.1.0",
+    "sqlalchemy[asyncio]>=2.0.45",
 ]
 
 [build-system]

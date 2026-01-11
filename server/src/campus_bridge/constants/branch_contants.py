@@ -1,0 +1,17 @@
+# branch constants 
+
+CSE="CSE"
+IT="ID"
+ECE="ECE"
+MECHNICAL="MECHANICAL"
+CIVIL="CIVIL"
+ELECTRICAL="ELECTRICAL"
+
+ALL_BRANCH = (
+    CSE,
+    IT,
+    ECE,
+    MECHNICAL,
+    CIVIL,
+    ELECTRICAL
+)
