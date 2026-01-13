@@ -62,3 +62,8 @@ class User(
         back_populates="user",
         uselist=False
     )
+    posts: Mapped[list["Post"]] = relationship(
+        "Post",
+        back_populates="user",
+        uselist=False
+    )
