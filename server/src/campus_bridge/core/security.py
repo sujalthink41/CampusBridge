@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
-from jose import jwt
+from jose import jwt, ExpiredSignatureError, JWTError
 from passlib.context import CryptContext
 
 from campus_bridge.config.settings.app import app_settings
+from campus_bridge.errors.exc import (
+    UnAuthenticatedError    
+)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -35,3 +38,28 @@ def create_access_token(
         "iss": APP_NAME,
     }
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+def verify_access_token(
+    token: str
+) -> dict:
+    """Verify JWT access token and return payload"""
+
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+        return payload
+    except ExpiredSignatureError as exc:
+        raise UnAuthenticatedError(
+            details="token_expired",
+            message="Access token has expired",
+            exc=exc
+        )
+    except JWTError as exc:
+        raise UnAuthenticatedError(
+            details="Invalid token",
+            message="Invalid access token",
+            exc=exc
+        )
