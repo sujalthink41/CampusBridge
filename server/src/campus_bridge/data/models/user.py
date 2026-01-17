@@ -33,6 +33,10 @@ class User(
         nullable=False,
         unique=True
     )
+    password: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False
+    )
     phone: Mapped[str] = mapped_column(
         String(15),
         nullable=False,
@@ -65,5 +69,10 @@ class User(
     posts: Mapped[list["Post"]] = relationship(
         "Post",
         back_populates="user",
-        uselist=False
+        cascade="all, delete-orphan"
+    )
+    email_verifications: Mapped[list["EmailVerification"]] = relationship(
+        "EmailVerification",
+        back_populates="user",
+        cascade="all, delete-orphan"
     )

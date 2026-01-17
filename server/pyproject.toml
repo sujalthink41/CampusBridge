@@ -12,6 +12,10 @@ dependencies = [
     "pydantic-settings>=2.0.0",
     "fastapi-injectable>=0.1.0",
     "sqlalchemy[asyncio]>=2.0.45",
+    "asyncpg>=0.31.0",
+    "alembic>=1.18.1",
+    "python-jose>=3.5.0",
+    "passlib[bcrypt]>=1.7.4",
 ]
 
 [build-system]

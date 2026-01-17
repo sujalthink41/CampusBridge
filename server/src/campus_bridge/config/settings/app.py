@@ -10,14 +10,16 @@ env_file = Path(__file__).parent.parent.parent.parent.parent / ".env"
 
 class AppSettings(BaseSettings):
 
-    APP_NAME: str = Field("CAMPUSBRIDGE")
-    APP_URL: str = Field("http://localhost:3000")
+    APP_NAME: str = Field(...)
+    APP_URL: str = Field(...)
 
     DATABASE_URL: str = Field(...)
     ALLOW_ORIGINS: str = Field(...)
 
     ENVIRONMENT: Environments = Environments.development
     LOG_LEVEL: LogLevel = LogLevel.INFO
+
+    ALGORITHM:str = Field(...)
 
     @property
     def allowed_origins(self):
