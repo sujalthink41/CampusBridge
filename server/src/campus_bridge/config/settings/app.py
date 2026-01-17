@@ -20,6 +20,8 @@ class AppSettings(BaseSettings):
     LOG_LEVEL: LogLevel = LogLevel.INFO
 
     ALGORITHM:str = Field(...)
+    SECRET_KEY:str = Field(...)
+    EXPIRES_MINUTES: int = Field(...)
 
     @property
     def allowed_origins(self):
