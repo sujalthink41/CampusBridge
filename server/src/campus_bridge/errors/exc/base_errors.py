@@ -20,7 +20,7 @@ class BaseError(HTTPException):
         self._log_error()
 
     def _log_error(self) -> None:
-        if not self.log_config or len(log_config) < 2:
+        if not self.log_config or len(self.log_config) < 2:
             return
         
         struct_logger = structlog.stdlib.get_logger(__name__)
@@ -37,7 +37,7 @@ class BaseError(HTTPException):
         
         if len(self.log_config) > 2:
             log_format = self.log_config[1]
-            log_args = self._log_config[2:]
+            log_args = self.log_config[2:]
             event_data["details"] = log_format % log_args if log_args else log_format
 
         struct_log_method("error_raised", **event_data)
@@ -48,12 +48,12 @@ class NotFoundError(BaseError):
         super().__init__(
             status_code=status.HTTP_404_NOT_FOUND,
             message=f"{resource} with identifier '{identifier}' not found",
-            log_config={
+            log_config=(
                 "warning",
                 "%s not found with identifier: %s",
                 resource,
                 str(identifier)
-            }
+            )
         )
 
 class AlreadyExistsError(BaseError):
@@ -61,12 +61,12 @@ class AlreadyExistsError(BaseError):
         super().__init__(
             status_code=status.HTTP_409_CONFLICT,
             message=f"{resource} with identifier '{identifier}' already exists.",
-            log_config={
+            log_config=(
                 "warning",
                 "%s already exists with identifier: %s",
                 resource,
                 str(identifier)
-            }
+            )
         )
 
 # TODO:(Sujal) -> wrap obj, act and owner in one schema later by name AuthorizedPolicyRequest
@@ -75,12 +75,12 @@ class UnauthorizedError(BaseError):
         super().__init__(
             status_code=status.HTTP_403_FORBIDDEN,
             message=f"You are not authorized to perform {act} action on {obj} resource",
-            log_config={
+            log_config=(
                 "info",
-                "unauthorized error: %s",
+                "unauthorized error: %s %s",
                 obj,
                 act
-            }
+            )
         )
 
 class BadRequestError(BaseError):

@@ -4,8 +4,8 @@ from pydantic import BaseModel, EmailStr, Field
 
 from campus_bridge.data.enums.role import RoleEnum
 
-
 class UserResponse(BaseModel):
+    """This is the response after creation of user"""
     id: UUID = Field(description="User unique identifier")
     email: EmailStr = Field(description="User email")
     phone: str = Field(description="User phone number")
