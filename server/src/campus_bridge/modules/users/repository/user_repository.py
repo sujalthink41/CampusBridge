@@ -45,30 +45,38 @@ class UserRepository:
         return result.scalars().all()
 
     @sqlalchemy_exceptions
-    async def update_user(self, user_id: UUID, updated_data):
-        """Simply update a single user"""
-        await self.db.execute(
+    async def update_user(self, user_id: UUID, updated_data: dict) -> User:
+        """Update a single user"""
+        result = await self.db.execute(
             update(User)
             .where(
                 User.id == user_id,
                 ~User.is_deleted()
             )
             .values(**updated_data)
+            .returning(User)
         )
-
-        await self.db.commit()
-        result = await self.db.execute(select(User).where(User.id == user_id))
-        return result.scalar_one()
+        
+        updated_user = result.scalar_one_or_none()
+        await self.db.flush()
+        
+        if updated_user:
+            await self.db.refresh(updated_user)
+        
+        return updated_user
 
     @sqlalchemy_exceptions
-    async def delete_user(self, user_id: UUID):
-        """Soft Delete User"""
+    async def delete_user(self, user_id: UUID) -> None:
+        """Soft delete a user"""
         await self.db.execute(
             update(User)
-            .where(User.id == user_id)
+            .where(
+                User.id == user_id,
+                ~User.is_deleted()
+            )
             .values(is_deleted=True)
         )
-        await self.db.commit()
+        await self.db.flush()
 
 def get_user_repository(
     db: AsyncSession = Depends(get_async_session)

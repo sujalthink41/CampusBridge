@@ -46,3 +46,20 @@ async def get_current_user(
     # fetch user via service
     user = await user_service.get_user_by_id(user_id=user_id)
     return user
+
+
+async def require_admin(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """Dependency to ensure the current user is an admin"""
+    from campus_bridge.data.enums.role import RoleEnum
+    from campus_bridge.errors.exc import UnauthorizedError
+    
+    if current_user.role != RoleEnum.ADMIN:
+        logger.warning("Non-admin user attempted admin action", user_id=str(current_user.id))
+        raise UnauthorizedError(
+            obj="admin resources",
+            act="access"
+        )
+    
+    return current_user
