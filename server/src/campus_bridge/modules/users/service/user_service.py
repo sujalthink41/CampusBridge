@@ -4,7 +4,8 @@ from typing import Optional
 from fastapi import Depends
 
 from campus_bridge.data.models.user import User
-from campus_bridge.errors.exc import UnAuthenticatedError
+from campus_bridge.data.schemas.user import UserUpdateRequest, UserUpdateResponse
+from campus_bridge.errors.exc import UnAuthenticatedError, BadRequestError
 from campus_bridge.data.enums.role import RoleEnum
 from campus_bridge.modules.users.repository.user_repository import (
     UserRepository,
@@ -51,6 +52,25 @@ class UserService:
         logger.info("Users fetched successfully", count=len(users))
         
         return users
+
+    async def update_user(self, user_id: UUID, user_data: UserUpdateRequest) -> UserUpdateResponse:
+        """Update a single user"""
+        await self.get_user_by_id(user_id=user_id)
+        updated_data = user_data.model_dump(exclude_unset=True)
+        if not updated_data: 
+            logger.warning("No data to update")
+            raise BadRequestError(
+                message="No_data_to_update",
+                details="There is no data to update"
+            )
+        updated_user = await self.repository.update_user(user_id=user_id,
+        updated_data=updated_data)
+        return UserUpdateResponse.model_validate(updated_user)
+
+    async def delete_user(self, user_id: UUID | str):
+        """Soft Delete User"""
+        await self.get_user_by_id(user_id=user_id)
+        await self.repository.delete_user(user_id=user_id)
 
 def get_user_service(
     repository: UserRepository = Depends(get_user_repository)

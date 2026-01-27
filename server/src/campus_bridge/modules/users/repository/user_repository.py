@@ -1,7 +1,7 @@
 from uuid import UUID
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from fastapi import Depends
 
@@ -44,6 +44,31 @@ class UserRepository:
         result = await self.db.execute(query)
         return result.scalars().all()
 
+    @sqlalchemy_exceptions
+    async def update_user(self, user_id: UUID, updated_data):
+        """Simply update a single user"""
+        await self.db.execute(
+            update(User)
+            .where(
+                User.id == user_id,
+                ~User.is_deleted()
+            )
+            .values(**updated_data)
+        )
+
+        await self.db.commit()
+        result = await self.db.execute(select(User).where(User.id == user_id))
+        return result.scalar_one()
+
+    @sqlalchemy_exceptions
+    async def delete_user(self, user_id: UUID):
+        """Soft Delete User"""
+        await self.db.execute(
+            update(User)
+            .where(User.id == user_id)
+            .values(is_deleted=True)
+        )
+        await self.db.commit()
 
 def get_user_repository(
     db: AsyncSession = Depends(get_async_session)

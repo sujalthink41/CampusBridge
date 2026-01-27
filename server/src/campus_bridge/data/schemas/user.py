@@ -15,3 +15,12 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True  
+
+class UserUpdateRequest(BaseModel):
+    """This is the UserUpdateRequest Schema"""
+    phone: Optional[str] = Field(default=None, description="User updated phone number")
+    role: Optional[RoleEnum] = Field(default=None, description="User updated role") 
+
+class UserUpdateResponse(UserResponse):
+    """This is the UserUpdateResponse Schema"""
+    pass
