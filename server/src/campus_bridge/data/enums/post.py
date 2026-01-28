@@ -9,8 +9,7 @@ from campus_bridge.constants.post_contstant import (
     QUERY,
     EVENT,
     PUBLIC,
-    STUDENT,
-    ALUMNI
+    COLLEGE
 )
 
 class PostTypeEnum(str, Enum):
@@ -29,8 +28,7 @@ post_type_enum = SQLEnum(
 class PostVisibilityEnum(str, Enum):
     # visibility to whom enum 
     PUBLIC = PUBLIC
-    STUDENT = STUDENT
-    ALUMNI = ALUMNI
+    COLLEGE = COLLEGE 
 
 post_visibility_type_enum = SQLEnum(
     PostVisibilityEnum,

@@ -1,6 +1,6 @@
 from campus_bridge.data.enums.state import StateEnum, state_enum
 from sqlalchemy import String, Boolean, UniqueConstraint
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from campus_bridge.data.database.base import Base
 from campus_bridge.data.database.mixins import (
@@ -41,3 +41,8 @@ class College(
         nullable=False,
         index=True
     )
+
+    posts: Mapped[list["Post"]] = relationship(
+        "Post",
+        back_populates="college"
+    )   

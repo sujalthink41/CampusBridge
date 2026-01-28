@@ -32,7 +32,11 @@ class Post(
         ForeignKey(get_foreign_key("User"), nullable=False),
         index=True
     )
-    Content: Mapped[str] = mapped_column(
+    college_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey(get_foreign_key("College"), nullable=False),
+        index=True
+    )   
+    content: Mapped[str] = mapped_column(
         Text,
         nullable=False
     )
@@ -71,3 +75,7 @@ class Post(
         "PostReaction",
         cascade="all, delete-orphan"
     )
+    college: Mapped["College"] = relationship(
+        "College",
+        back_populates="posts"
+    )   
