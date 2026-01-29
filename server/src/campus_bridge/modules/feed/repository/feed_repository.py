@@ -8,6 +8,7 @@ from campus_bridge.data.models.post import Post
 from campus_bridge.data.enums.post import PostVisibilityEnum
 from campus_bridge.api.v1.dependencies import get_async_session
 from campus_bridge.errors.decorators.sqlalchemy import sqlalchemy_exceptions
+from campus_bridge.utils.cursor_pagination import cursor_pagination
 
 class FeedRepository:
     def __init__(self, db: AsyncSession):
@@ -38,7 +39,7 @@ class FeedRepository:
         return post 
 
     @sqlalchemy_exceptions
-    async def get_college_posts(self, college_id: UUID) -> list[Post]:
+    async def get_college_posts(self, college_id: UUID, limit: int, cursor: str | None) -> list[Post]:
         """Get all college posts"""
         stmt = (
             select(Post)
@@ -46,25 +47,41 @@ class FeedRepository:
                 Post.visibility == PostVisibilityEnum.COLLEGE,
                 Post.college_id == college_id,
                 Post.is_hidden.is_(False),
+                Post.is_deleted.is_(False),
             )
-            .order_by(desc(Post.created_at))
             .options(joinedload(Post.user))
+        )
+
+        stmt = cursor_pagination(
+            stmt=stmt,
+            cursor=cursor,
+            limit=limit,
+            created_at_column=Post.created_at,
+            id_column=Post.id,
         )
 
         result = await self.db.execute(stmt)
         return result.scalars().all()
 
     @sqlalchemy_exceptions
-    async def get_public_posts(self) -> list[Post]:
+    async def get_public_posts(self, limit: int, cursor: str | None) -> list[Post]:
         """Get all public posts"""
         stmt = (
             select(Post)
             .where(
                 Post.visibility == PostVisibilityEnum.PUBLIC,
                 Post.is_hidden.is_(False),
+                Post.is_deleted.is_(False),
             )
-            .order_by(desc(Post.created_at))
             .options(joinedload(Post.user))
+        )
+
+        stmt = cursor_pagination(
+            stmt=stmt,
+            cursor=cursor,
+            limit=limit,
+            created_at_column=Post.created_at,
+            id_column=Post.id,
         )
 
         result = await self.db.execute(stmt)

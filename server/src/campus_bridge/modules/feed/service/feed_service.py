@@ -41,15 +41,15 @@ class FeedService:
         )
         return PostResponse.model_validate(created_post)
 
-    async def get_college_posts(self, current_user: User) -> list[PostResponse]:
+    async def get_college_posts(self, current_user: User, limit: int, cursor: str | None) -> list[PostResponse]:
         """Get all college posts"""
-        posts = await self.repository.get_college_posts(college_id=current_user.college_id)
+        posts = await self.repository.get_college_posts(college_id=current_user.college_id, limit=limit, cursor=cursor)
         logger.info("college_posts_fetched", user_id=str(current_user.id), posts=len(posts))  
         return [PostResponse.model_validate(post) for post in posts]
 
-    async def get_public_posts(self, current_user: User) -> list[PostResponse]:
+    async def get_public_posts(self, current_user: User, limit: int, cursor: str | None) -> list[PostResponse]:
         """Get all public posts"""
-        posts = await self.repository.get_public_posts()
+        posts = await self.repository.get_public_posts(limit=limit, cursor=cursor)  
         logger.info("public_posts_fetched", user_id=str(current_user.id), count=len(posts))
         return [PostResponse.model_validate(post) for post in posts]
 

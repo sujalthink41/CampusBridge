@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, status
+from uuid import UUID
+from fastapi import APIRouter, Depends, status, Query
 
 from campus_bridge.data.models.user import User
 from campus_bridge.api.v1.dependencies import require_admin_or_officials_or_alumni, get_current_user
@@ -28,18 +29,22 @@ async def create_post(
 @router.get("/college",status_code=status.HTTP_200_OK, response_model=list[PostResponse])
 async def get_all_posts_by_college(
     current_user: User = Depends(get_current_user),
-    feed_service: FeedService = Depends(get_feed_service)
+    feed_service: FeedService = Depends(get_feed_service),
+    limit: int = Query(default=10, ge=1, le=50),
+    cursor: str | None = Query(None, description="Cursor for pagination")
 ):
     """Current User college specific posts"""
-    return await feed_service.get_college_posts(current_user)
+    return await feed_service.get_college_posts(current_user=current_user, limit=limit, cursor=cursor)
 
 @router.get("/public", status_code=status.HTTP_200_OK, response_model=list[PostResponse])
 async def get_public_posts(
     current_user: User = Depends(get_current_user),
     feed_service: FeedService = Depends(get_feed_service),
+    limit: int = Query(default=10, ge=1, le=50),
+    cursor: str | None = Query(None, description="Cursor for pagination")
 ):
     """Public feed"""
-    return await feed_service.get_public_posts(current_user)
+    return await feed_service.get_public_posts(current_user=current_user, limit=limit, cursor=cursor)
 
 @router.patch("/{post_id}", status_code=status.HTTP_200_OK, response_model=PostResponse)
 async def update_post(
