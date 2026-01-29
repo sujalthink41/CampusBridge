@@ -32,3 +32,8 @@ git clone <repo-url>
 cd server
 install dependencies : uv sync
 run server : uv run poe dev
+
+
+How to use it:
+Make changes to models -> Run uv run alembic revision --autogenerate -m "message"
+Apply changes -> Run uv run alembic upgrade head

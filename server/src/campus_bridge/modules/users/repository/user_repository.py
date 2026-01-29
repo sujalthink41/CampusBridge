@@ -25,7 +25,7 @@ class UserRepository:
         result = await self.db.execute(
             select(User).where(
                 User.id == user_id, 
-                ~User.is_deleted()
+                ~User.is_deleted
             )
         )
         return result.scalar_one_or_none()
@@ -35,7 +35,7 @@ class UserRepository:
         """Fetch all users under a particular college, optionally filtered by role"""
         query = select(User).where(
             User.college_id == college_id,
-            ~User.is_deleted()
+            ~User.is_deleted
         )
         
         if role is not None:
@@ -51,7 +51,7 @@ class UserRepository:
             update(User)
             .where(
                 User.id == user_id,
-                ~User.is_deleted()
+                ~User.is_deleted
             )
             .values(**updated_data)
             .returning(User)
@@ -72,7 +72,7 @@ class UserRepository:
             update(User)
             .where(
                 User.id == user_id,
-                ~User.is_deleted()
+                ~User.is_deleted
             )
             .values(is_deleted=True)
         )

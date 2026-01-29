@@ -40,7 +40,7 @@ class CollegeRepository:
         result = await self.db.execute(
                 select(College).where(
                 College.id == college_id,
-                ~College.is_deleted()
+                ~College.is_deleted
             )
         )
         return result.scalar_one_or_none()
@@ -52,7 +52,7 @@ class CollegeRepository:
         """Get all college"""
         result = await self.db.execute(
             select(College).where(
-                ~College.is_deleted()
+                ~College.is_deleted
             )
         )
         return result.scalars().all()
@@ -79,4 +79,4 @@ class CollegeRepository:
 def get_college_repository(
     db: AsyncSession = Depends(get_async_session)
 ) -> CollegeRepository:
-    return CollegeRepository
+    return CollegeRepository(db=db)

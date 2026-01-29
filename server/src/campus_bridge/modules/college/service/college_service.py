@@ -146,4 +146,4 @@ class CollegeService:
 def get_college_service(
     repository: CollegeRepository = Depends(get_college_repository)
 ) -> CollegeService:
-    return CollegeService
+    return CollegeService(repository=repository)

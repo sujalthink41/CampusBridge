@@ -39,5 +39,5 @@ class PostReaction(
     )
 
     # relationship
-    post: Mapped["Post"] = relationship("Post")
+    post: Mapped["Post"] = relationship("Post", back_populates="reactions")
     user: Mapped["User"] = relationship("User")

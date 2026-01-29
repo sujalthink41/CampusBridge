@@ -73,8 +73,9 @@ class Post(
         back_populates="post",
         cascade="all, delete-orphan"
     )
-    reactions: Mapped["PostReaction"] = relationship(
+    reactions: Mapped[list["PostReaction"]] = relationship(
         "PostReaction",
+        back_populates="post",
         cascade="all, delete-orphan"
     )
     college: Mapped["College"] = relationship(
