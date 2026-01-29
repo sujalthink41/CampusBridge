@@ -28,7 +28,7 @@ Backend service for **CampusConnect** — a college–alumni–student engagemen
 
 ## Project Setup
 
-### 1. Clone the repository
-```bash
 git clone <repo-url>
-cd backend
+cd server
+install dependencies : uv sync
+run server : uv run poe dev
