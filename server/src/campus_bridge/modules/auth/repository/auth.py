@@ -4,7 +4,7 @@ from sqlalchemy import select
 from fastapi import Depends
 
 from campus_bridge.data.models.user import User
-from campus_bridge.api.v1.dependencies import get_async_session
+from campus_bridge.data.database.session import get_async_session
 from campus_bridge.errors.decorators.sqlalchemy import sqlalchemy_exceptions
 
 class AuthRepository:

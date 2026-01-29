@@ -1,3 +1,4 @@
+import uuid
 from pydantic import BaseModel, EmailStr, Field
 from campus_bridge.data.enums.role import RoleEnum
 

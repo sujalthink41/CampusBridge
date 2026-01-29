@@ -18,7 +18,7 @@ class College(
     SoftDeleteMixin
 ):
     __table_args__ = (
-        UniqueConstraint("name", "city", "state", name="uq_college_identity")
+        UniqueConstraint("name", "city", "state", name="uq_college_identity"),
     )
 
     name: Mapped[str] = mapped_column(

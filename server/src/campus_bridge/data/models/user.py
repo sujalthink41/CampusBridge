@@ -26,7 +26,8 @@ class User(
     VerifyAccount
 ):
     college_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("College"), nullable=False)
+        ForeignKey(get_foreign_key("College")),
+        nullable=False
     )
     email: Mapped[str] = mapped_column(
         String(100),

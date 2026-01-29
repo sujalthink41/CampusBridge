@@ -5,7 +5,7 @@ from sqlalchemy import select, update
 
 from fastapi import Depends
 
-from campus_bridge.api.v1.dependencies import get_async_session
+from campus_bridge.data.database.session import get_async_session
 from campus_bridge.data.models.user import User
 from campus_bridge.data.models.college import College
 from campus_bridge.data.enums.role import RoleEnum

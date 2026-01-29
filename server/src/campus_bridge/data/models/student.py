@@ -5,7 +5,6 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from campus_bridge.data.enums.branch import BranchEnum, branch_enum
-from campus_bridge.data.models.user import User
 from campus_bridge.utils.db_object import get_foreign_key
 from campus_bridge.data.database.mixins import (
     TableNameMixin,
@@ -25,7 +24,10 @@ class Student(
     VerifyAccount
 ):
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User"), nullable=False, unique=True, index=True)
+        ForeignKey(get_foreign_key("User")),
+        nullable=False,
+        unique=True,
+        index=True
     )
     first_name: Mapped[str] = mapped_column(
         String(100),

@@ -20,11 +20,13 @@ class Comment(
     SoftDeleteMixin
 ):
     post_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("Post"), nullable=False),
+        ForeignKey(get_foreign_key("Post")),
+        nullable=False,
         index=True
     )
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User"), nullable=False),
+        ForeignKey(get_foreign_key("User")),
+        nullable=False,
         index=True
     )
     parent_id: Mapped[uuid.UUID | None] = mapped_column(

@@ -3,10 +3,11 @@ from uuid import UUID
 from sqlalchemy import select, desc
 from sqlalchemy.orm import joinedload 
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends
 
 from campus_bridge.data.models.post import Post
 from campus_bridge.data.enums.post import PostVisibilityEnum
-from campus_bridge.api.v1.dependencies import get_async_session
+from campus_bridge.data.database.session import get_async_session
 from campus_bridge.errors.decorators.sqlalchemy import sqlalchemy_exceptions
 from campus_bridge.utils.cursor_pagination import cursor_pagination
 

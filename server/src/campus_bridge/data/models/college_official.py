@@ -5,7 +5,6 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from campus_bridge.data.database.base import Base
-from campus_bridge.data.models.user import User
 from campus_bridge.data.database.mixins import (
     IdMixin,
     TableNameMixin,
@@ -24,7 +23,8 @@ class CollegeOfficial(
 ):
 
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User"), nullable=False),
+        ForeignKey(get_foreign_key("User")),
+        nullable=False,
         unique=True,
         index=True
     )
@@ -34,9 +34,7 @@ class CollegeOfficial(
     )
 
     # relationship 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User")),
-        nullable=False,
-        unique=True,
-        index=True
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="official_profile"
     )

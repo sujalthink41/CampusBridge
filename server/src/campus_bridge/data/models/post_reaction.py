@@ -22,10 +22,12 @@ class PostReaction(
     TimestampMixin
 ):
     post_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("Post"), nullable=False)
+        ForeignKey(get_foreign_key("Post")),
+        nullable=False
     )
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User"), nullable=False)
+        ForeignKey(get_foreign_key("User")),
+        nullable=False
     )
     reaction: Mapped[ReactionTypeEnum] = mapped_column(
         reaction_type_enum,

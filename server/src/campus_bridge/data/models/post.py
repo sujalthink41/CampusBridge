@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import ForeignKey, String, Text, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.dialects.postgres import JSONB
+from sqlalchemy.dialects.postgresql import JSONB
 
 from campus_bridge.data.database.base import Base
 from campus_bridge.utils.db_object import get_foreign_key
@@ -29,11 +29,13 @@ class Post(
 ):
 
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User"), nullable=False),
+        ForeignKey(get_foreign_key("User")),
+        nullable=False,
         index=True
     )
     college_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("College"), nullable=False),
+        ForeignKey(get_foreign_key("College")),
+        nullable=False,
         index=True
     )   
     content: Mapped[str] = mapped_column(
@@ -55,7 +57,7 @@ class Post(
         default=False,
         nullable=False
     )
-    metadata: Mapped[dict] = mapped_column(
+    meta_data: Mapped[dict] = mapped_column(
         JSONB,
         nullable=True,
         default=dict

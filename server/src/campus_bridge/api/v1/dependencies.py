@@ -1,11 +1,10 @@
 import structlog
-from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-from campus_bridge.data.database.core import AsyncSessionLocal
+from campus_bridge.data.database.session import get_async_session
 from campus_bridge.core.security import verify_access_token
 from campus_bridge.errors.exc import UnAuthenticatedError
 from campus_bridge.modules.users.service.user_service import get_user_service, UserService
@@ -15,16 +14,6 @@ from campus_bridge.data.models.user import User
 
 logger = structlog.stdlib.get_logger(__name__)
 security = HTTPBearer()
-
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with AsyncSessionLocal() as session:
-        try:
-            yield session
-            await session.commit()
-        except Exception as exc:
-            logger.exception("Database transaction failed", exc=exc)
-            await session.rollback()
-            raise
 
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),

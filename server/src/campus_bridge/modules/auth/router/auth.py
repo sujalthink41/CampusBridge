@@ -10,7 +10,7 @@ from campus_bridge.modules.auth.service.auth import (
     get_auth_service
 )
 
-router = APIRouter("/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
 @router.post(

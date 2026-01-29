@@ -1,9 +1,8 @@
-from tokenize import String
 import uuid
 from datetime import datetime
-from typing import case 
+from typing import cast
 
-from sqlalchemy import Boolean, DateTime, func 
+from sqlalchemy import Boolean, DateTime, String, func 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, declared_attr
 
@@ -19,7 +18,7 @@ class IdMixin:
 class TableNameMixin:
     @declared_attr.directive
     def __tablename__(cls) -> str:
-        cls = case(type, cls)
+        cls = cast(type, cls)
         return get_database_native_name(cls.__name__, "table")
 
 class TimestampMixin:

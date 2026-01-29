@@ -31,7 +31,7 @@ class FeedService:
             content=post_data.content,
             post_type=post_data.post_type,
             visibility=post_data.visibility,
-            metadata=post_data.metadata
+            meta_data=post_data.metadata
         )
         created_post = await self.repository.create_post(post)  
         logger.info(

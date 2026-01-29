@@ -1,6 +1,5 @@
 import uuid 
 
-from campus_bridge.data.models.user import User
 from campus_bridge.utils.db_object import get_foreign_key
 from sqlalchemy import String, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -24,7 +23,10 @@ class Alumni(
     VerifyAccount
 ):
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User"), nullable=False, unique=True, index=True)
+        ForeignKey(get_foreign_key("User")),
+        nullable=False,
+        unique=True,
+        index=True
     )
     graduation_year: Mapped[int] = mapped_column(
         Integer,
@@ -53,10 +55,8 @@ class Alumni(
         nullable=False,
     )
 
-    #realtionship
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(get_foreign_key("User")),
-        nullable=False,
-        unique=True,
-        index=True
+    # relationship
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="alumni_profile"
     )

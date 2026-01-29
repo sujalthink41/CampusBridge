@@ -19,7 +19,7 @@ from campus_bridge.data.schemas.college import (
     CollegeDeleteResponse
 )
 
-router = APIRouter("/college", tags=["college"])
+router = APIRouter(prefix="/college", tags=["college"])
 
 @router.post("", response_model=list[CollegeResponse], status_code=status.HTTP_201_CREATED)
 async def create_colleges(
