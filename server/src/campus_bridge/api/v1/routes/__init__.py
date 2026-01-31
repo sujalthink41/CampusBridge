@@ -6,6 +6,7 @@ from campus_bridge.modules.auth.router.auth import router as auth_router
 from campus_bridge.modules.college.router.college_router import router as college_router
 from campus_bridge.modules.feed.router.feed_router import router as feed_router
 from campus_bridge.modules.users.router.user_router import router as user_router
+from campus_bridge.modules.student.router.student_router import router as student_router
 from campus_bridge.api.v1.dependencies import get_current_user
 
 # Health check router (no auth required)
@@ -22,6 +23,7 @@ _private_router = APIRouter(dependencies=[Depends(get_current_user)])
 _private_router.include_router(college_router)
 _private_router.include_router(feed_router)
 _private_router.include_router(user_router)
+_private_router.include_router(student_router)
 
 # Main API router with /api/v1 prefix
 _api_router = APIRouter(prefix="/api/v1")
