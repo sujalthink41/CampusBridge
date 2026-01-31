@@ -16,12 +16,7 @@ async def get_current_student(
     current_user: User = Depends(get_current_user),
     student_service: StudentService = Depends(get_student_service)
 ):
-    """Get current student details"""
-    if current_user.role != RoleEnum.ADMIN and current_user.role != RoleEnum.STUDENT and current_user.role != RoleEnum.OFFICIALS:
-        raise UnauthorizedError(
-            obj="student",
-            act="get"
-        )   
+    """Get current student details""" 
     return await student_service.get_current_student(current_user)
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=list[StudentUserResponse])
@@ -33,23 +28,17 @@ async def get_all_students(
     if current_user.role != RoleEnum.ADMIN:
         raise UnauthorizedError(
             obj="student",
-            act="get"
+            act="get_all_students"
         )
     return await student_service.get_all_students(current_user)
 
-@router.get("/college/{college_id}", status_code=status.HTTP_200_OK, response_model=list[StudentUserResponse])
+@router.get("/college", status_code=status.HTTP_200_OK, response_model=list[StudentUserResponse])
 async def get_all_students_by_college(
-    college_id: UUID,
     current_user: User = Depends(get_current_user),
     student_service: StudentService = Depends(get_student_service)
 ):
-    """Get all students by college"""
-    if current_user.role != RoleEnum.ADMIN and current_user.role != RoleEnum.OFFICIALS:
-        raise UnauthorizedError(
-            obj="student",
-            act="get"   
-        )
-    return await student_service.get_all_students_by_college(college_id)
+    """Get all students of current user college"""
+    return await student_service.get_all_students_by_college(current_user.college_id)
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=StudentResponse)
 async def create_student(
@@ -58,7 +47,7 @@ async def create_student(
     student_service: StudentService = Depends(get_student_service)
 ):
     """Create a new Student"""
-    if current_user.role != RoleEnum.ADMIN and current_user.role != RoleEnum.STUDENT and current_user.role != RoleEnum.OFFICIALS:
+    if current_user.role != RoleEnum.ADMIN or current_user.role != RoleEnum.STUDENT or current_user.role != RoleEnum.OFFICIALS:
         raise UnauthorizedError(
             obj="student",
             act="create"
@@ -72,7 +61,7 @@ async def update_student(
     student_service: StudentService = Depends(get_student_service)
 ):
     """Partially update student details"""
-    if current_user.role != RoleEnum.ADMIN and current_user.role != RoleEnum.STUDENT and current_user.role != RoleEnum.OFFICIALS:
+    if current_user.role != RoleEnum.ADMIN or current_user.role != RoleEnum.STUDENT or current_user.role != RoleEnum.OFFICIALS:
         raise UnauthorizedError(
             obj="student",
             act="update"
@@ -85,7 +74,7 @@ async def delete_student(
     student_service: StudentService = Depends(get_student_service)
 ):
     """Delete student profile"""
-    if current_user.role != RoleEnum.ADMIN and current_user.role != RoleEnum.OFFICIALS:
+    if current_user.role != RoleEnum.ADMIN or current_user.role != RoleEnum.OFFICIALS:
         raise UnauthorizedError(
             obj="student",
             act="delete"
