@@ -1,17 +1,19 @@
-import logging 
+import logging
 import sys
-from typing import Any 
+from typing import Any
 
 import structlog
 from structlog.types import EventDict, Processor
 
 from .settings import settings
 
+
 def add_app_context(logger: Any, method_name: str, event_dict: EventDict) -> EventDict:
     """Add application context to log events."""
     event_dict["app"] = settings.APP_NAME
     event_dict["environment"] = settings.ENVIRONMENT
     return event_dict
+
 
 def setup_structlog() -> None:
     """Configue structurlog for structured JSON logging"""
@@ -28,7 +30,7 @@ def setup_structlog() -> None:
 
     # build processor based on environment
     if settings.is_production:
-        # production JSON output 
+        # production JSON output
         final_processors = shared_processors + [
             structlog.processors.format_exc_info,  # Format exception info
             structlog.processors.UnicodeDecoder(),  # Decode bytes to unicode

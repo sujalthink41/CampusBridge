@@ -4,8 +4,9 @@ from uuid import UUID
 import structlog
 from fastapi import HTTPException, status
 
-# Type for log levels 
+# Type for log levels
 LogLevel = Literal["debug", "info", "warning", "error", "critical"]
+
 
 class BaseError(HTTPException):
     def __init__(
@@ -22,19 +23,19 @@ class BaseError(HTTPException):
     def _log_error(self) -> None:
         if not self.log_config or len(self.log_config) < 2:
             return
-        
+
         struct_logger = structlog.stdlib.get_logger(__name__)
         log_level = self.log_config[0]
 
         struct_log_method = getattr(struct_logger, log_level, struct_logger.error)
 
-        # convert logs args to structured format 
+        # convert logs args to structured format
         event_data = {
             "error_type": type(self).__name__,
             "status_code": self.status_code,
-            "message": self.detail
+            "message": self.detail,
         }
-        
+
         if len(self.log_config) > 2:
             log_format = self.log_config[1]
             log_args = self.log_config[2:]
@@ -52,9 +53,10 @@ class NotFoundError(BaseError):
                 "warning",
                 "%s not found with identifier: %s",
                 resource,
-                str(identifier)
-            )
+                str(identifier),
+            ),
         )
+
 
 class AlreadyExistsError(BaseError):
     def __init__(self, resource: str, identifier: str | int | UUID):
@@ -65,9 +67,10 @@ class AlreadyExistsError(BaseError):
                 "warning",
                 "%s already exists with identifier: %s",
                 resource,
-                str(identifier)
-            )
+                str(identifier),
+            ),
         )
+
 
 # TODO:(Sujal) -> wrap obj, act and owner in one schema later by name AuthorizedPolicyRequest
 class UnauthorizedError(BaseError):
@@ -75,13 +78,9 @@ class UnauthorizedError(BaseError):
         super().__init__(
             status_code=status.HTTP_403_FORBIDDEN,
             message=f"You are not authorized to perform {act} action on {obj} resource",
-            log_config=(
-                "info",
-                "unauthorized error: %s %s",
-                obj,
-                act
-            )
+            log_config=("info", "unauthorized error: %s %s", obj, act),
         )
+
 
 class BadRequestError(BaseError):
     def __init__(
@@ -97,6 +96,7 @@ class BadRequestError(BaseError):
             ),
         )
 
+
 class ConflictError(BaseError):
     def __init__(self, message: str):
         super().__init__(
@@ -108,6 +108,7 @@ class ConflictError(BaseError):
                 message,
             ),
         )
+
 
 class UnAuthenticatedError(BaseError):
     def __init__(
@@ -123,6 +124,7 @@ class UnAuthenticatedError(BaseError):
                 str(exc),
             ),
         )
+
 
 class InternalError(BaseError):
     def __init__(self, details: str, exc: Exception, message: str | None = None):

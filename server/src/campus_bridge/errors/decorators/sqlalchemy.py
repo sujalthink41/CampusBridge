@@ -16,6 +16,7 @@ logger = structlog.stdlib.get_logger(__name__)
 
 T = TypeVar("T")
 
+
 # TODO(Sujal): Join the logger within the Internal Error
 def sqlalchemy_exceptions(
     func: Callable[..., Awaitable[T]],

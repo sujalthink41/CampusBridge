@@ -1,25 +1,26 @@
 import structlog
-from fastapi import status, Depends
+from fastapi import Depends, status
 
 from campus_bridge.config.settings.app import app_settings
-from campus_bridge.core.security import hash_password, verify_password, create_access_token
+from campus_bridge.core.security import (
+    create_access_token,
+    hash_password,
+    verify_password,
+)
 from campus_bridge.data.models.user import User
+from campus_bridge.data.schemas.auth import LoginRequest, RegisterRequest, TokenResponse
 from campus_bridge.errors.exc import (
     AlreadyExistsError,
     InternalError,
-    UnAuthenticatedError
-)
-from campus_bridge.data.schemas.auth import (
-    RegisterRequest,
-    LoginRequest,
-    TokenResponse
+    UnAuthenticatedError,
 )
 from campus_bridge.modules.auth.repository.auth import (
     AuthRepository,
-    get_auth_repository
+    get_auth_repository,
 )
 
 logger = structlog.stdlib.get_logger(__name__)
+
 
 class AuthService:
     def __init__(
@@ -29,7 +30,7 @@ class AuthService:
         self.repository = repository
 
     async def register(
-        self, 
+        self,
         payload: RegisterRequest,
     ):
         """Register User"""
@@ -58,11 +59,8 @@ class AuthService:
 
         logger.info("Auth Register Success", user_id=str(user.id))
         return str(user.id)
-    
-    async def login(
-        self,
-        payload: LoginRequest
-    ):
+
+    async def login(self, payload: LoginRequest):
         user = await self.repository.get_by_email(payload.email)
         if not user:
             logger.info("Auth login user not found", email=payload.email)
@@ -81,21 +79,17 @@ class AuthService:
         if not user.is_verified:
             logger.info("Auth login user not verified", user_id=str(user.id))
             raise UnAuthenticatedError(
-                details="Email not verified",
-                message="Email not verified"
+                details="Email not verified", message="Email not verified"
             )
 
         try:
             token = create_access_token(
                 subject=str(user.id),
                 role=user.role.value,
-                college_id=str(user.college_id)
+                college_id=str(user.college_id),
             )
         except Exception as exc:
-            raise InternalError(
-                details="Failed to create access token",
-                exc=exc
-            )
+            raise InternalError(details="Failed to create access token", exc=exc)
 
         logger.info("Auth login Success", user_id=str(user.id))
         return TokenResponse(
@@ -105,6 +99,6 @@ class AuthService:
 
 
 def get_auth_service(
-    repository: AuthRepository = Depends(get_auth_repository)
+    repository: AuthRepository = Depends(get_auth_repository),
 ) -> AuthService:
     return AuthService(repository)

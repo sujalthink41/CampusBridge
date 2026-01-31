@@ -40,3 +40,6 @@ dev = [
     "python-lsp-black>=2.0.0",
     "python-lsp-server>=1.14.0",
 ]
+
+[tool.isort]
+profile = "black"

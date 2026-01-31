@@ -8,6 +8,7 @@ from ...data.enums.config import Environments, LogLevel
 
 env_file = Path(__file__).parent.parent.parent.parent.parent / ".env"
 
+
 class AppSettings(BaseSettings):
 
     APP_NAME: str = Field(...)
@@ -19,8 +20,8 @@ class AppSettings(BaseSettings):
     ENVIRONMENT: Environments = Environments.development
     LOG_LEVEL: LogLevel = LogLevel.INFO
 
-    ALGORITHM:str = Field(...)
-    SECRET_KEY:str = Field(...)
+    ALGORITHM: str = Field(...)
+    SECRET_KEY: str = Field(...)
     EXPIRES_MINUTES: int = Field(...)
 
     @property
@@ -37,5 +38,6 @@ class AppSettings(BaseSettings):
 @lru_cache
 def _get_app_settings():
     return AppSettings()
+
 
 app_settings = _get_app_settings()

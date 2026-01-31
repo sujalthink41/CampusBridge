@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends, FastAPI
-from .health_check import router as health_check_router
+
+from campus_bridge.api.v1.dependencies import get_current_user
 
 # Import all module routers
 from campus_bridge.modules.auth.router.auth import router as auth_router
 from campus_bridge.modules.college.router.college_router import router as college_router
 from campus_bridge.modules.feed.router.feed_router import router as feed_router
-from campus_bridge.modules.users.router.user_router import router as user_router
 from campus_bridge.modules.student.router.student_router import router as student_router
-from campus_bridge.api.v1.dependencies import get_current_user
+from campus_bridge.modules.users.router.user_router import router as user_router
+
+from .health_check import router as health_check_router
 
 # Health check router (no auth required)
 _health_router = APIRouter()
@@ -35,5 +37,6 @@ def add_application_routes(app: FastAPI):
     """Register all application routes"""
     app.include_router(_health_router)
     app.include_router(_api_router)
+
 
 __all__ = ["add_application_routes"]

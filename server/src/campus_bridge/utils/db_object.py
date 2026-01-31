@@ -1,8 +1,9 @@
-from typing import Literal 
+from typing import Literal
 
 from pydantic.alias_generators import to_snake
 
 DATABASE_SCHEMA_OBJECT = Literal["table", "index", "constraint", "pk", "fk", "enum"]
+
 
 def _pluralize(word: str) -> str:
     if word.endswith("y") and word[-2] not in "aeiou":
@@ -11,6 +12,7 @@ def _pluralize(word: str) -> str:
         return word + "es"
     else:
         return word + "s"
+
 
 def get_database_native_name(name: str, type: DATABASE_SCHEMA_OBJECT) -> str:
     """
@@ -42,6 +44,7 @@ def get_database_native_name(name: str, type: DATABASE_SCHEMA_OBJECT) -> str:
             return f"enum_{snake_name}"
         case _:
             return ValueError(f"Invalid type: {type}")
+
 
 def get_foreign_key(model_name: str, field_name: str = "id") -> str:
     """

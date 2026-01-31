@@ -1,13 +1,8 @@
-# role constants 
+# role constants
 
 STUDENT: str = "STUDENT"
 ALUMNI: str = "ALUMNI"
 OFFICIALS: str = "OFFICIALS"
 ADMIN: str = "ADMIN"
 
-ALL_ROLES = (
-    STUDENT,
-    ALUMNI,
-    OFFICIALS,
-    ADMIN
-)
+ALL_ROLES = (STUDENT, ALUMNI, OFFICIALS, ADMIN)

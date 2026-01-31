@@ -5,8 +5,9 @@ from fastapi_injectable import setup_graceful_shutdown
 
 from .logging import initialize_logging
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     initialize_logging()
-    yield 
+    yield
     setup_graceful_shutdown()

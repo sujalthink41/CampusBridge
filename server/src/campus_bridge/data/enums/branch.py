@@ -1,16 +1,17 @@
 from enum import Enum
 
-from campus_bridge.utils.db_object import get_database_native_name
-from sqlalchemy import Enum as SQLEnum 
+from sqlalchemy import Enum as SQLEnum
 
 from campus_bridge.constants.branch_contants import (
-    CSE,
-    IT,
     CIVIL,
-    MECHNICAL,
+    CSE,
+    ECE,
     ELECTRICAL,
-    ECE
+    IT,
+    MECHNICAL,
 )
+from campus_bridge.utils.db_object import get_database_native_name
+
 
 class BranchEnum(str, Enum):
     CSE = CSE
@@ -18,9 +19,7 @@ class BranchEnum(str, Enum):
     CIVIL = CIVIL
     MECHNICAL = MECHNICAL
     ELECTRICAL = ELECTRICAL
-    ECE = ECE 
+    ECE = ECE
 
-branch_enum = SQLEnum(
-    BranchEnum,
-    name=get_database_native_name("Branch", "enum")
-)
+
+branch_enum = SQLEnum(BranchEnum, name=get_database_native_name("Branch", "enum"))

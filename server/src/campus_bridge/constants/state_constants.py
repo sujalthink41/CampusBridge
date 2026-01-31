@@ -1,4 +1,4 @@
-# Indian States 
+# Indian States
 
 ANDHRA_PRADESH: str = "ANDHRA_PRADESH"
 ARUNACHAL_PRADESH: str = "ARUNACHAL_PRADESH"

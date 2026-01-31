@@ -32,7 +32,6 @@ from campus_bridge.constants.state_constants import (
     UTTARAKHAND,
     WEST_BENGAL,
 )
-
 from campus_bridge.utils.db_object import get_database_native_name
 
 
@@ -67,7 +66,4 @@ class StateEnum(str, Enum):
     WEST_BENGAL = WEST_BENGAL
 
 
-state_enum = SQLEnum(
-    StateEnum, 
-    name=get_database_native_name("State", "enum")
-)
+state_enum = SQLEnum(StateEnum, name=get_database_native_name("State", "enum"))

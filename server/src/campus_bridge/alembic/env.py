@@ -7,6 +7,7 @@ from sqlalchemy.engine.url import make_url
 # Adjusted imports for this project
 from campus_bridge.config.settings.app import app_settings
 from campus_bridge.data.database.base import Base
+
 # Import all models so they are registered with Base.metadata
 from campus_bridge.data.models import *  # noqa: F403
 

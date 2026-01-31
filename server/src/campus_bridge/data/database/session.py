@@ -1,11 +1,12 @@
 from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio import AsyncSession
 
 import structlog
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from campus_bridge.data.database.core import AsyncSessionLocal
 
 logger = structlog.stdlib.get_logger(__name__)
+
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     """Dependency to get async database session"""

@@ -1,10 +1,12 @@
-from uuid import UUID
-from typing import Optional
 from datetime import datetime
-from pydantic import Field, BaseModel, ConfigDict
+from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel, ConfigDict, Field
 
 from campus_bridge.data.enums.branch import BranchEnum
 from campus_bridge.data.enums.role import RoleEnum
+
 
 class StudentBase(BaseModel):
     """Base schema for student"""
@@ -20,6 +22,7 @@ class StudentBase(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class UserBase(BaseModel):
     """Base schema for user"""
 
@@ -31,6 +34,7 @@ class UserBase(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class UserResponse(UserBase):
     """Response schema for user"""
 
@@ -38,17 +42,21 @@ class UserResponse(UserBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-class StudentUserResponse(BaseModel):   
+
+class StudentUserResponse(BaseModel):
     """Response schema for student user"""
-    
+
     student: "StudentResponse"
     user: UserResponse
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class StudentCreate(StudentBase):
     """Create schema for student"""
+
     pass
+
 
 class StudentResponse(StudentBase):
     """Response schema for student"""
@@ -57,10 +65,12 @@ class StudentResponse(StudentBase):
     created_at: datetime = Field(description="Created at")
     updated_at: datetime = Field(description="Updated at")
 
-    model_config = ConfigDict(from_attributes=True)  
+    model_config = ConfigDict(from_attributes=True)
+
 
 class StudentUpdateRequest(BaseModel):
     """Update schema for student"""
+
     first_name: Optional[str] = Field(description="First name")
     middle_name: Optional[str] = Field(description="Middle name")
     last_name: Optional[str] = Field(description="Last name")
@@ -71,6 +81,8 @@ class StudentUpdateRequest(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class StudentUpdateResponse(StudentUpdateRequest):
     """Response schema for student update"""
+
     pass
